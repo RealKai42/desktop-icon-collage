@@ -12,9 +12,14 @@ function main() {
     img.onload = async function () {
       let width, height;
       [width, height] = [img.width, img.height];
-      const rowNumber = document.getElementById("row").value;
+      const rowNumber = document.getElementById("row").value ? document.getElementById("row").value : 9;
+      const xGap = document.getElementById("xGap").value ? document.getElementById("xGap").value : 10;
+      const yGap = document.getElementById("yGap").value ? document.getElementById("yGap").value : 10;
+
+      height -= (rowNumber - 1) * yGap;
       const picHeight = height / rowNumber;
       const colNumber = Math.max(Math.round(width / picHeight), 1);
+      width -= (colNumber - 1) * xGap;
       const picWidth = width / colNumber;
 
       const images = [];
@@ -28,7 +33,7 @@ function main() {
           picCanvas.width = picWidth;
           picCanvas.height = picHeight;
           let picCtx = picCanvas.getContext("2d");
-          picCtx.drawImage(img, x * picWidth, y * picHeight, picWidth, picHeight, 0, 0, picWidth, picHeight);
+          picCtx.drawImage(img, x * picWidth + (x - 1) * xGap, y * picHeight + (y - 1) * yGap, picWidth, picHeight, 0, 0, picWidth, picHeight);
 
           // 构造file name，使用lor和ror 让文件名隐藏
           let binary = i.toString(2);
